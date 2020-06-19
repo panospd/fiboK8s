@@ -1,0 +1,20 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t panospd/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true panospd/react-test npm test
+
+after_success:
+  - docker build -t panospd/fibo-client ./client
+  - docker build -t panospd/fibo-nginx ./nginx
+  - docker build -t panospd/fibo-server ./server
+  - docker build -t panospd/fibo-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push panospd/fibo-client
+  - docker push panospd/fibo-nginx
+  - docker push panospd/fibo-server
+  - docker push panospd/fibo-worker
