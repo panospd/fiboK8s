@@ -18,3 +18,16 @@ after_success:
   - docker push panospd/fibo-nginx
   - docker push panospd/fibo-server
   - docker push panospd/fibo-worker
+
+deploy:
+  edge: true
+  provider: elasticbeanstalk
+  region: eu-west-2
+  app: fibonacci-prod
+  env: FibonacciProd-env
+  bucket_name: elasticbeanstalk-eu-west-2-464618713373
+  bucket_path: fibo-multi
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
