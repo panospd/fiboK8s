@@ -16,12 +16,12 @@ before_install:
   - gcloud container clusters get-credentials fibo-cluster
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker build -t panospd/react-test -f ./client/Dockerfile.dev ./client
-  
-  script:
-    - docker run -e CI=true panospd/react-test npm run test
 
-  deploy:
-    provider: script
-    script: bash ./deploy.sh
-    on:
-      branch: master
+script:
+  - docker run -e CI=true panospd/react-test npm run test
+
+deploy:
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master
